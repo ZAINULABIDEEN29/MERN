@@ -14,10 +14,16 @@ COPY . .
 
 # Build arguments for environment variables
 ARG VITE_BACKEND_URL
-ENV VITE_BACKEND_URL=${VITE_BACKEND_URL}
+ENV VITE_BACKEND_URL=${VITE_BACKEND_URL:-http://localhost:3000}
 
-# Build the application
-RUN npm run build
+# Verify environment variable is set
+RUN echo "Building with VITE_BACKEND_URL=${VITE_BACKEND_URL}"
+
+# Build the application with verbose output
+RUN echo "Starting Vite build..." && \
+    npm run build && \
+    echo "Build completed successfully" && \
+    ls -la dist/ || (echo "Build failed - dist directory not found" && exit 1)
 
 # Production stage with nginx
 FROM nginx:alpine

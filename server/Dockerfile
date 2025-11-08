@@ -6,14 +6,18 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies
+# Install all dependencies (including devDependencies for build)
 RUN npm ci
 
 # Copy source code
 COPY . .
 
-# Build TypeScript
-RUN npm run build
+# Build TypeScript with verbose output
+ENV NODE_ENV=production
+RUN echo "Starting TypeScript build..." && \
+    npm run build && \
+    echo "Build completed successfully" && \
+    ls -la dist/ || (echo "Build failed - dist directory not found" && exit 1)
 
 # Production stage
 FROM node:20-alpine
