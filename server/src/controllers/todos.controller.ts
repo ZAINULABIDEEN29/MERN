@@ -14,7 +14,7 @@ export const createTodos = asyncHandler(
 
         const trimmedContent = content.trim();
 
-        // Check if todo with same content already exists for this user
+        
         const contentAlreadyExists = await Todo.findOne({ 
             content: trimmedContent,
             createdBy: user 

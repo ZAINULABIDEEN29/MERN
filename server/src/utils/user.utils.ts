@@ -6,7 +6,7 @@ export const findUserById = async (id:string)=>{
 }
 
 export const findUserByEmail  = async(email:string, includePassword: boolean = false)=>{
-    // Include password field only when needed (e.g., for login comparison)
+   
     if (includePassword) {
         return await User.findOne({email}).select('+password');
     }

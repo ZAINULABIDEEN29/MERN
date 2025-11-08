@@ -15,7 +15,7 @@ const Register: React.FC = () => {
     const navigate = useNavigate();
     const { isAuthenticated, isLoading, error: authError } = useAppSelector((state) => state.auth);
 
-    // Navigate to todos when authenticated (after register or if already logged in)
+   
     useEffect(() => {
         if (isAuthenticated && !isLoading) {
             setIsSubmitting(false);
@@ -62,7 +62,7 @@ const Register: React.FC = () => {
                     },
                 }
             );
-            // Navigation will happen via useEffect when isAuthenticated becomes true
+            
         } catch (err: any) {
             setError(err || "Registration failed. Please try again.");
             setIsSubmitting(false);

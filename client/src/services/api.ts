@@ -14,7 +14,7 @@ api.interceptors.response.use(
     (response) => response,
     (error: AxiosError) => {
         if (error.response?.status === 401) {
-            // Only redirect if not already on login/register page
+           
             const currentPath = window.location.pathname;
             if (currentPath !== "/login" && currentPath !== "/register") {
                 window.location.href = "/login";

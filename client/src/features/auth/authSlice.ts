@@ -16,14 +16,12 @@ const initialState: AuthState = {
     error: null,
 };
 
-// Async thunks
 export const fetchUserProfile = createAsyncThunk(
     "auth/fetchProfile",
     async (_, { rejectWithValue }) => {
         try {
             const response = await authService.getProfile();
-            // authService returns AuthResponse: { status: string, data: User }
-            // response is already the AuthResponse, so response.data is the User object
+           
             const user = response.data;
             if (!user || !user._id) {
                 console.error("Invalid user data received:", user);
@@ -43,8 +41,7 @@ export const loginUser = createAsyncThunk(
     async (credentials: LoginCredentials, { rejectWithValue }) => {
         try {
             const response = await authService.login(credentials);
-            // authService returns AuthResponse: { status: string, data: User }
-            // response is already the AuthResponse, so response.data is the User object
+           
             const user = response.data;
             if (!user || !user._id) {
                 console.error("Invalid user data received:", user);
@@ -66,8 +63,7 @@ export const registerUser = createAsyncThunk(
     async (credentials: RegisterCredentials, { rejectWithValue }) => {
         try {
             const response = await authService.register(credentials);
-            // authService returns AuthResponse: { status: string, data: User }
-            // response is already the AuthResponse, so response.data is the User object
+           
             const user = response.data;
             if (!user || !user._id) {
                 console.error("Invalid user data received:", user);
@@ -112,7 +108,7 @@ const authSlice = createSlice({
         },
     },
     extraReducers: (builder) => {
-        // Fetch profile
+       
         builder
             .addCase(fetchUserProfile.pending, (state) => {
                 state.isLoading = true;
@@ -120,7 +116,7 @@ const authSlice = createSlice({
             })
             .addCase(fetchUserProfile.fulfilled, (state, action) => {
                 state.isLoading = false;
-                // Ensure we have a valid user object
+               
                 if (action.payload && action.payload._id) {
                     state.user = action.payload;
                     state.isAuthenticated = true;
@@ -137,7 +133,7 @@ const authSlice = createSlice({
                 state.error = action.payload as string;
             });
 
-        // Login
+        
         builder
             .addCase(loginUser.pending, (state) => {
                 state.isLoading = true;
@@ -145,7 +141,7 @@ const authSlice = createSlice({
             })
             .addCase(loginUser.fulfilled, (state, action) => {
                 state.isLoading = false;
-                // Ensure we have a valid user object
+               
                 if (action.payload && action.payload._id) {
                     state.user = action.payload;
                     state.isAuthenticated = true;
@@ -160,7 +156,7 @@ const authSlice = createSlice({
                 state.error = action.payload as string;
             });
 
-        // Register
+        
         builder
             .addCase(registerUser.pending, (state) => {
                 state.isLoading = true;
@@ -168,7 +164,7 @@ const authSlice = createSlice({
             })
             .addCase(registerUser.fulfilled, (state, action) => {
                 state.isLoading = false;
-                // Ensure we have a valid user object
+               
                 if (action.payload && action.payload._id) {
                     state.user = action.payload;
                     state.isAuthenticated = true;
@@ -183,7 +179,7 @@ const authSlice = createSlice({
                 state.error = action.payload as string;
             });
 
-        // Logout
+       
         builder
             .addCase(logoutUser.pending, (state) => {
                 state.isLoading = true;

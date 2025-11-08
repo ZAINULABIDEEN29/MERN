@@ -13,20 +13,19 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
     const hasCheckedAuth = useRef(false);
 
     useEffect(() => {
-        // Only fetch profile once on mount if not authenticated and not loading
-        // This handles page refresh scenarios where we need to verify the token
+       
         if (!isAuthenticated && !isLoading && !hasCheckedAuth.current) {
             hasCheckedAuth.current = true;
             dispatch(fetchUserProfile());
         }
     }, [dispatch, isAuthenticated, isLoading]);
 
-    // If authenticated with user data, show children immediately
+    
     if (isAuthenticated && user) {
         return <>{children}</>;
     }
 
-    // Show loading only when actively fetching profile (on page refresh)
+   
     if (isLoading && !isAuthenticated) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
@@ -35,12 +34,12 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
         );
     }
 
-    // Not authenticated - redirect to login
+   
     if (!isAuthenticated && !isLoading) {
         return <Navigate to="/login" replace />;
     }
 
-    // Default: show nothing while determining auth state
+    
     return null;
 };
 

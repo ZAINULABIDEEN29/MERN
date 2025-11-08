@@ -24,7 +24,7 @@ const AddTodoForm: React.FC = () => {
                     setError("");
                 },
                 onError: (err: any) => {
-                    // Handle validation errors from API
+
                     if (err?.response?.data?.errors && Array.isArray(err.response.data.errors)) {
                         const errorMessages = err.response.data.errors.map((e: any) => e.message).join(", ");
                         setError(errorMessages);

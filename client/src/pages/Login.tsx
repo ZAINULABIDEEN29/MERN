@@ -13,7 +13,7 @@ const Login: React.FC = () => {
     const navigate = useNavigate();
     const { isAuthenticated, isLoading, error: authError } = useAppSelector((state) => state.auth);
 
-    // Navigate to todos when authenticated (after login or if already logged in)
+    
     useEffect(() => {
         if (isAuthenticated && !isLoading) {
             setIsSubmitting(false);
@@ -44,7 +44,7 @@ const Login: React.FC = () => {
                     },
                 }
             );
-            // Navigation will happen via useEffect when isAuthenticated becomes true
+           
         } catch (err: any) {
             setError(err || "Login failed. Please check your credentials.");
             setIsSubmitting(false);

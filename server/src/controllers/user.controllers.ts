@@ -12,7 +12,7 @@ export const createdUser = asyncHandler(
 
         const {username, email,password} = req.body;
 
-        // Check if user exists (without password field)
+       
         const userAlreadyExists = await findUserByEmail(email, false)
         if(userAlreadyExists){
             throw new ApiError(400, "User already exists")
@@ -33,10 +33,10 @@ export const createdUser = asyncHandler(
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             sameSite: "lax",
-            maxAge: 24 * 60 * 60 * 1000 // 1 day
+            maxAge: 24 * 60 * 60 * 1000 
         });
 
-        // Remove password from response
+        
         const userResponse = user.toObject();
         const { password: _, ...userWithoutPassword } = userResponse;
 
@@ -53,7 +53,7 @@ export const loginUser = asyncHandler(
 
         const  { email,password} = req.body;
 
-        // Get user with password for comparison
+       
         const userAlreadyExists = await findUserByEmail(email, true);
 
         if(!userAlreadyExists){
@@ -91,7 +91,7 @@ export const getProfile = asyncHandler(
     async(req:Request,res:Response,_next:NextFunction)=>{
         const user = req.user;
         
-        // Remove password from response if it exists
+        
         if (user) {
             const userResponse = user.toObject ? user.toObject() : user;
             const { password: _, ...userWithoutPassword } = userResponse as any;

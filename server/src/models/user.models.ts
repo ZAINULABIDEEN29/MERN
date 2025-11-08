@@ -41,10 +41,8 @@ const userSchema = new Schema<IUser>(
     password: {
       type: String,
       required: true,
-      // No maxlength - bcrypt hashes are always 60 characters
-      // Validation is handled by Zod before hashing
-      trim: false, // Don't trim password
-      select: false, // Don't return password in queries by default
+      trim: false, 
+      select: false,
     },
     isVerified: {
       type: Boolean,
@@ -56,7 +54,7 @@ const userSchema = new Schema<IUser>(
   }
 );
 
-// 4️⃣ Instance methods
+
 userSchema.methods.generateAuthToken = function (): string {
   return jwt.sign({ id: this._id }, process.env.JWT_SECRET as string, {
     expiresIn: "1d",
@@ -69,14 +67,13 @@ userSchema.methods.comparePassword = async function (
   return await bcrypt.compare(password, this.password);
 };
 
-// 5️⃣ Static method
+
 userSchema.statics.hashedPassword = async function (
   password: string
 ): Promise<string> {
   return await bcrypt.hash(password, 10);
 };
 
-// 6️⃣ Create model
 const User = mongoose.model<IUser, IUserModel>("User", userSchema);
 
 export default User;

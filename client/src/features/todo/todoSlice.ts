@@ -88,7 +88,7 @@ const todoSlice = createSlice({
         },
     },
     extraReducers: (builder) => {
-        // Fetch todos
+       
         builder
             .addCase(fetchTodos.pending, (state) => {
                 state.loading = true;
@@ -104,7 +104,7 @@ const todoSlice = createSlice({
                 state.error = action.payload as string;
             });
 
-        // Add todo
+       
         builder
             .addCase(addTodo.pending, (state) => {
                 state.error = null;
@@ -117,7 +117,7 @@ const todoSlice = createSlice({
                 state.error = action.payload as string;
             });
 
-        // Update todo
+   
         builder
             .addCase(updateTodo.pending, (state) => {
                 state.error = null;
@@ -135,7 +135,7 @@ const todoSlice = createSlice({
                 state.error = action.payload as string;
             });
 
-        // Delete todo
+        
         builder
             .addCase(deleteTodo.pending, (state) => {
                 state.error = null;
@@ -150,7 +150,7 @@ const todoSlice = createSlice({
                 state.error = action.payload as string;
             });
 
-        // Reset todos when user logs out
+        
         builder.addCase(logoutUser.fulfilled, (state) => {
             state.items = [];
             state.loading = false;

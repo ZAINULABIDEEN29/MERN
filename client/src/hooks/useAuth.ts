@@ -21,7 +21,7 @@ export const useAuth = () => {
     ) => {
         try {
             const result = await dispatch(loginUser(credentials)).unwrap();
-            // Navigation is handled by the Login component via useEffect
+            
             return result;
         } catch (error: any) {
             if (options?.onError) {
@@ -37,7 +37,7 @@ export const useAuth = () => {
     ) => {
         try {
             const result = await dispatch(registerUser(credentials)).unwrap();
-            // Navigation is handled by the Register component via useEffect
+           
             return result;
         } catch (error: any) {
             if (options?.onError) {
