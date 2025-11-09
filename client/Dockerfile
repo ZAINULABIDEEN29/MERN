@@ -3,44 +3,33 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# Copy package files
-COPY package*.json ./
 
-# Install dependencies
-RUN npm ci
+COPY package*.json  package-lock.json ./
+COPY tsconfig.json ./
 
-# Copy source code
+
+RUN npm install
+
+
 COPY . .
 
-# Build arguments for environment variables
-ARG VITE_BACKEND_URL
-ENV VITE_BACKEND_URL=${VITE_BACKEND_URL:-http://localhost:3000}
+RUN npm run build
 
-# Verify environment variable is set
-RUN echo "Building with VITE_BACKEND_URL=${VITE_BACKEND_URL}"
+FROM node:20-alpine
 
-# Build the application with verbose output
-RUN echo "Starting Vite build..." && \
-    npm run build && \
-    echo "Build completed successfully" && \
-    ls -la dist/ || (echo "Build failed - dist directory not found" && exit 1)
+WORKDIR /app
 
-# Production stage with nginx
-FROM nginx:alpine
+COPY package*.json ./
+COPY tsconfig.json ./
+RUN npm install
 
-# Copy built files from builder
-COPY --from=builder /app/dist /usr/share/nginx/html
 
-# Copy nginx configuration
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY . .
 
-# Expose port
-EXPOSE 80
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD wget --no-verbose --tries=1 --spider http://localhost/ || exit 1
+EXPOSE 5173
 
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+
+
+CMD ["npm", "run", "dev", "--", "--host"]
 
