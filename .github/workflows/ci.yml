@@ -28,9 +28,6 @@ jobs:
           node-version: 20
           cache: npm
 
-      - name: Install root dependencies
-        run: npm install --legacy-peer-deps
-
       - name: Install server dependencies
         working-directory: server
         run: npm install --legacy-peer-deps
@@ -39,6 +36,7 @@ jobs:
         working-directory: client
         run: npm install --legacy-peer-deps
 
+      
       - name: Lint backend & frontend
         run: npm run lint --if-present
 
