@@ -1,0 +1,54 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: ["main", "dev"]
+  pull_request:
+    branches: ["main", "dev"]
+
+env:
+  CLIENT_URL: ${{ secrets.CLIENT_URL }}
+  JWT_SECRET: ${{ secrets.JWT_SECRET }}
+  MONGO_URI: ${{ secrets.MONGO_URI }}
+  NODE_ENV: ${{ secrets.NODE_ENV }}
+  PORT: ${{ secrets.PORT }}
+  VITE_BACKEND_URL: ${{ secrets.VITE_BACKEND_URL }}
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install root dependencies
+        run: npm install --legacy-peer-deps
+
+      - name: Install server dependencies
+        working-directory: server
+        run: npm install --legacy-peer-deps
+
+      - name: Install client dependencies
+        working-directory: client
+        run: npm install --legacy-peer-deps
+
+      - name: Lint backend & frontend
+        run: npm run lint --if-present
+
+      - name: Build backend (TypeScript)
+        working-directory: server
+        run: npm run build
+
+      - name: Build frontend (Vite)
+        working-directory: client
+        run: npm run build
+
+      - name: Docker Build
+        run: docker compose build --build-arg VITE_BACKEND_URL=${{ secrets.VITE_BACKEND_URL }}

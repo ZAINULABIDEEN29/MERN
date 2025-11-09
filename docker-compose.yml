@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
- 
+
   mongodb:
     image: mongo:7.0
     container_name: mern-todo-mongodb
@@ -9,8 +9,9 @@ services:
       - "27017:27017"
     volumes:
       - mongodb_data:/data/db
+    networks:
+      - mern-todo-network
 
-  # Backend Service
   server:
     build: ./server
     container_name: mern_todo_server
@@ -24,8 +25,9 @@ services:
     volumes:
       - ./server:/app
       - /app/node_modules
+    networks:
+      - mern-todo-network
 
-  # Frontend Service (Development)
   client:
     build: ./client
     container_name: mern-todo-client
@@ -33,13 +35,14 @@ services:
     ports:
       - "5173:5173"
     environment:
-     - VITE_API_URL=http://localhost:5000
+      - VITE_API_URL=http://server:8000
     depends_on:
       - server
     volumes:
       - ./client:/app
       - /app/node_modules
-   
+    networks:
+      - mern-todo-network
 
 volumes:
   mongodb_data:
