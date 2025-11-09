@@ -37,6 +37,6 @@ app.use("/api/todos", todoRoutes);
 
 app.use(errorHandler);
 
-app.listen(PORT,()=>{
+app.listen(Number(PORT),'0.0.0.0',()=>{
     console.log(`PORT Running on http://localhost:${PORT}`)
 })

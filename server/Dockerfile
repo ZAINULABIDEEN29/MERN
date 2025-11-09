@@ -1,44 +1,37 @@
-# Build stage
 FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# Copy package files
-COPY package*.json ./
+COPY package*.json  ./
+COPY tsconfig.json ./
 
-# Install all dependencies (including devDependencies for build)
-RUN npm ci
 
-# Copy source code
+RUN npm install
+
+
 COPY . .
 
-# Build TypeScript with verbose output
-ENV NODE_ENV=production
-RUN echo "Starting TypeScript build..." && \
-    npm run build && \
-    echo "Build completed successfully" && \
-    ls -la dist/ || (echo "Build failed - dist directory not found" && exit 1)
 
-# Production stage
+ENV NODE_ENV=developnent
+
+RUN npm run build 
+
+
 FROM node:20-alpine
 
 WORKDIR /app
 
-# Copy package files
+
 COPY package*.json ./
 
-# Install only production dependencies
-RUN npm ci --only=production
 
-# Copy built files from builder
+RUN npm install --only=production
+
+
 COPY --from=builder /app/dist ./dist
 
-# Expose port
-EXPOSE 3000
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD node -e "require('http').get('http://localhost:3000/', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
+EXPOSE 8000
 
 # Start server
 CMD ["npm", "start"]
