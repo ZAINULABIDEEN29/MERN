@@ -44,7 +44,12 @@ jobs:
         working-directory: client
         run: npm install --legacy-peer-deps
 
-      - name: Lint backend & frontend
+      - name: Lint server
+        working-directory: server
+        run: npm run lint --if-present
+
+      - name: Lint client
+        working-directory: client
         run: npm run lint --if-present
 
       - name: Build backend (TypeScript)
