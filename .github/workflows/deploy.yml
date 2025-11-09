@@ -11,6 +11,7 @@ env:
   NODE_ENV: ${{ secrets.NODE_ENV }}
   PORT: ${{ secrets.PORT }}
   VITE_BACKEND_URL: ${{ secrets.VITE_BACKEND_URL }}
+  DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
 
 jobs:
   dockerhub:
