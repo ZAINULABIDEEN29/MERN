@@ -14,7 +14,7 @@ services:
 
   server:
     build: ./server
-    image: ${{DOCKERHUB_USERNAME}}/mern-server
+    image: ${DOCKERHUB_USERNAME}/mern-server
     container_name: mern_todo_server
     ports:
       - "8000:8000"
@@ -31,7 +31,7 @@ services:
 
   client:
     build: ./client
-    image: ${{DOCKERHUB_USERNAME}}/mern-client
+    image: ${DOCKERHUB_USERNAME}/mern-client
     container_name: mern-todo-client
     restart: unless-stopped
     ports:
